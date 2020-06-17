@@ -9,10 +9,15 @@
 <script>
 export default {
   name: 'Login',
+  mounted () {
+    this.newChat()
+    this.newChatUUID()
+  },
   data () {
     return {
       chatName: '',
-      userName: ''
+      userName: '',
+      uuid:''
     }
   },
   computed: {
@@ -24,17 +29,18 @@ export default {
     }
   },
   methods: {
-    getuuid () {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0,
-            v = c == 'x' ? r : (r & 0x3 | 0x8)
-        return v.toString(16);
-    })
-    },
     handleClick () {
-      this.$router.push('/'+this.getuuid())
       this.$store.commit('change', this.name)
       this.socket.emit('login', this.name)
+      this.$router.push('/'+this.uuid)
+    },
+    newChat () {
+      this.socket.emit('newChat','')
+    },
+    newChatUUID () {
+      this.socket.on('newChatUUID', data => {
+        this.uuid = data
+      })
     }
   },
   props: {
