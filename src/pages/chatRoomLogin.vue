@@ -16,13 +16,15 @@ export default {
   methods: {
     handleClick () {
       this.socket.emit('login', {
-        userName: this.userName,
+        userName: this.userName
       })
       this.$emit('change')
-      this.$store.commit('change', {userName: this.userName})
+      this.$store.commit('change', {
+        userName: this.userName,
+        uuid: this.$route.params.uuid
+        })
     }
   }
-
 }
 </script>
 

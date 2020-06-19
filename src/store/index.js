@@ -4,21 +4,24 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 let defaultuserName = ''
 let defaultchatName = ''
+let defaultuuid = ''
 try {
   if(localStorage.userName){
     defaultuserName = localStorage.userName
   }
-} catch (error) {}
-
-try {
   if(localStorage.chatName){
     defaultchatName = localStorage.chatName
   }
+  if(localStorage.uuid){
+    defaultuuid = localStorage.uuid
+  }
 } catch (error) {}
+
 export default new Vuex.Store({
   state: {
     chatName: defaultchatName,
-    userName: defaultuserName
+    userName: defaultuserName,
+    uuid: defaultuuid
   },
   mutations: {
     change (state, obj){
@@ -29,7 +32,9 @@ export default new Vuex.Store({
         } catch (error){}
       }
       state.userName = obj.userName
-      try {
+      state.uuid = obj.uuid
+      try{
+        localStorage.uuid = obj.uuid
         localStorage.userName = obj.userName
       } catch (error) {}
     }

@@ -24,7 +24,8 @@ export default {
     name () {
       return {
         chatName: this.chatName, 
-        userName: this.userName
+        userName: this.userName,
+        uuid: this.uuid
       }
     }
   },

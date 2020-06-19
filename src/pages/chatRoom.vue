@@ -61,18 +61,14 @@ export default {
   components: {
     chatRoomLogin
   },
-  updated () {
-    this.scrollToBottom() 
-   },
   mounted () {
     this.init()
-    this.giveChatName()
     this.yesOrNo()
+    this.giveChatName()
     this.updateUserList()
     this.welcome()
     this.goodbye()
     this.accept()
-    this.scrollToBottom() 
   },
   beforeDestroy () {
     this.exit()
@@ -82,12 +78,14 @@ export default {
       if(this.show && this.check){
         this.loginOrNot = true
         this.join()
+      }else {
+        alert('会议不存在')
       }
     },
-    chatRoomName () {
-      if(this.$store.state.chatName == this.chatRoomName){
+    check () {
+      if( this.check && this.$route.params.uuid == this.$store.state.uuid){
         this.loginOrNot = true
-        console.log('hello')
+        console.log(this.check+'check')
         this.socket.emit('login', {
           userName: this.$store.state.userName
         })
@@ -123,9 +121,9 @@ export default {
     },
     init () {
       this.socket.emit('init')
+      console.log('init')
     },
     giveChatName () {
-      var chatName = ''
       this.socket.on('giveChatName', data => {
         this.chatRoomName = data
       })
@@ -164,22 +162,16 @@ export default {
     },
     yesOrNo () {
       this.socket.on('yesOrNo', data => {
-        console.log(this.$route.params.uuid)
-        console.log(data)
+        console.log('yesorno')
         if(this.$route.params.uuid == data){
+          console.log('yes')
           this.check = true
+          console.log(this.check+'yes')
         }
       })
     },
-    scrollToBottom () {
-      this.$nextTick(() => {
-        if(this.$refs['message'])
-         var container = this.$refs['message']
-         container.scrollTop = container.scrollHeight;
-       })
-    },
     exit () {
-      this.socket.emit('disconnect', this.$store.state.userName)
+      this.socket.emit('exit', this.$store.state.userName)
     }
   }  
 }

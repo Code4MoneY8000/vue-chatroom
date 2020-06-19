@@ -53,10 +53,21 @@ io.on('connection', (socket) => {
   })
   socket.on('disconnect', () => {
     let idx = usersList.findIndex(item => item == socket.userName)
-    usersList.splice(idx, 1)
-    io.emit('updateUserList', usersList)
-    io.emit('goodbye',socket.userName)
-    console.log(usersList)
+    if(idx != -1){
+      usersList.splice(idx, 1)
+      io.emit('updateUserList', usersList)
+      io.emit('goodbye',socket.userName)
+      console.log(usersList)
+    }
+  })
+  socket.on('exit', (data) => {
+    let idx = usersList.findIndex(item => item == socket.userName)
+    if (idx != -1) { 
+      usersList.splice(idx, 1)
+      io.emit('updateUserList', usersList)
+      io.emit('goodbye',socket.userName)
+      console.log(usersList)
+    }
   })
 });
 
